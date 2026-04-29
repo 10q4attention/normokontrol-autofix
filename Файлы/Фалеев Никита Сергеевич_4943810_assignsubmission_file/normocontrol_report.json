@@ -1,0 +1,214 @@
+{
+  "student_name": "Фалеев Никита Сергеевич",
+  "folder_path": "D:\\Система нормоконтроля\\Файлы\\Фалеев Никита Сергеевич_4943810_assignsubmission_file",
+  "metadata": {
+    "exists": true,
+    "student_name": "Фалеев Никита Сергеевич",
+    "folder_path": "D:\\Система нормоконтроля\\Файлы\\Фалеев Никита Сергеевич_4943810_assignsubmission_file",
+    "file_path": "D:\\Система нормоконтроля\\Файлы\\Фалеев Никита Сергеевич_4943810_assignsubmission_file\\отчет по практике Фалеев Н.С^.docx",
+    "file_name": "отчет по практике Фалеев Н.С^.docx",
+    "file_size": 125702,
+    "file_modified": "2025-12-26 03:20:04",
+    "file_extension": ".docx",
+    "doc_author": "Nekto .",
+    "doc_title": "Не указан",
+    "doc_pages": 4
+  },
+  "rules_results": {
+    "structure": {
+      "name": "Структура ВКР",
+      "description": "Проверка имени файла, обязательных разделов, порядка и нумерации",
+      "status": "fail",
+      "summary": "Заголовки не найдены",
+      "details": [
+        "Имя файла 'отчет по практике Фалеев Н.С^.docx' не соответствует шаблону 090302_22[БУКВА][4 ЦИФРЫ]_[ФАМИЛИЯ].docx",
+        "Заголовки первого уровня не найдены. Используйте стиль «Заголовок 1»."
+      ],
+      "received": "",
+      "expected": "Заголовок 1 для разделов: АННОТАЦИЯ, ОГЛАВЛЕНИЕ, ВВЕДЕНИЕ, ЗАКЛЮЧЕНИЕ, СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ, ПРИЛОЖЕНИЯ",
+      "metadata": {},
+      "html_row": "<div class=\"rule-row status-fail\"><span class=\"rule-name\">Структура ВКР</span> <span class=\"rule-summary\">Заголовки не найдены</span></div>",
+      "html_full": "<div class=\"full-rule-block status-fail\"><h3>Структура ВКР</h3><p>Проверка имени файла, обязательных разделов, порядка и нумерации</p><p>Статус: Не пройдено</p><div class=\"rule-detail\"><strong>Ожидаемый результат:</strong> Заголовок 1 для разделов: АННОТАЦИЯ, ОГЛАВЛЕНИЕ, ВВЕДЕНИЕ, ЗАКЛЮЧЕНИЕ, СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ, ПРИЛОЖЕНИЯ</div><div class=\"rule-details\"><strong>Нарушения:</strong><ul><li>Имя файла 'отчет по практике Фалеев Н.С^.docx' не соответствует шаблону 090302_22[БУКВА][4 ЦИФРЫ]_[ФАМИЛИЯ].docx</li><li>Заголовки первого уровня не найдены. Используйте стиль «Заголовок 1».</li></ul></div></div>"
+    },
+    "page_layout": {
+      "name": "Макет страницы",
+      "description": "Проверка полей (20-20-30-15 мм), ориентации (книжная), размера (A4), колонок (1)",
+      "status": "fail",
+      "summary": "Нарушений макета: 7",
+      "details": [
+        "Секция 1: левое поле 25.0 мм (должно 30 мм)",
+        "Секция 1: правое поле 10.0 мм (должно 15 мм)",
+        "Секция 2: левое поле 25.0 мм (должно 30 мм)",
+        "Секция 2: правое поле 10.0 мм (должно 15 мм)",
+        "Секция 3: верхнее поле 5.0 мм (должно 20 мм)",
+        "Секция 3: левое поле 25.0 мм (должно 30 мм)",
+        "Секция 3: правое поле 10.0 мм (должно 15 мм)"
+      ],
+      "received": "Секций: 4",
+      "expected": "Поля: 20-20-30-15 мм, книжная, A4, 1 колонка",
+      "metadata": {},
+      "html_row": "<div class=\"rule-row status-fail\"><span class=\"rule-name\">Макет страницы</span> <span class=\"rule-summary\">Нарушений макета: 7</span></div>",
+      "html_full": "<div class=\"full-rule-block status-fail\"><h3>Макет страницы</h3><p>Проверка полей (20-20-30-15 мм), ориентации (книжная), размера (A4), колонок (1)</p><p>Статус: Не пройдено</p><div class=\"rule-detail\"><strong>Полученные данные:</strong> Секций: 4</div><div class=\"rule-detail\"><strong>Ожидаемый результат:</strong> Поля: 20-20-30-15 мм, книжная, A4, 1 колонка</div><div class=\"rule-details\"><strong>Нарушения:</strong><ul><li>Секция 1: левое поле 25.0 мм (должно 30 мм)</li><li>Секция 1: правое поле 10.0 мм (должно 15 мм)</li><li>Секция 2: левое поле 25.0 мм (должно 30 мм)</li><li>Секция 2: правое поле 10.0 мм (должно 15 мм)</li><li>Секция 3: верхнее поле 5.0 мм (должно 20 мм)</li><li>Секция 3: левое поле 25.0 мм (должно 30 мм)</li><li>Секция 3: правое поле 10.0 мм (должно 15 мм)</li></ul></div></div>"
+    },
+    "text_rules": {
+      "name": "Правила оформления текста",
+      "description": "Проверка кавычек, нумерации объектов, ссылок, окончания параграфов",
+      "status": "fail",
+      "summary": "Нарушений в тексте: 1",
+      "details": [
+        "Обнаружены прямые кавычки (\") вместо ёлочек («») в русском тексте. Пример: \"Одежная изба\""
+      ],
+      "received": "Проверен текст (17635 символов)",
+      "expected": "Кавычки-ёлочки для русского текста, ссылки с большой буквы, текст после объектов",
+      "metadata": {},
+      "html_row": "<div class=\"rule-row status-fail\"><span class=\"rule-name\">Правила оформления текста</span> <span class=\"rule-summary\">Нарушений в тексте: 1</span></div>",
+      "html_full": "<div class=\"full-rule-block status-fail\"><h3>Правила оформления текста</h3><p>Проверка кавычек, нумерации объектов, ссылок, окончания параграфов</p><p>Статус: Не пройдено</p><div class=\"rule-detail\"><strong>Полученные данные:</strong> Проверен текст (17635 символов)</div><div class=\"rule-detail\"><strong>Ожидаемый результат:</strong> Кавычки-ёлочки для русского текста, ссылки с большой буквы, текст после объектов</div><div class=\"rule-details\"><strong>Нарушения:</strong><ul><li>Обнаружены прямые кавычки (\") вместо ёлочек («») в русском тексте. Пример: \"Одежная изба\"</li></ul></div></div>"
+    },
+    "main_text": {
+      "name": "Основной текст",
+      "description": "Проверка форматирования основного текста (Таблица 4.1)",
+      "status": "pass",
+      "summary": "Основной текст не найден",
+      "details": [],
+      "received": "",
+      "expected": "",
+      "metadata": {},
+      "html_row": "<div class=\"rule-row status-pass\"><span class=\"rule-name\">Основной текст</span> <span class=\"rule-summary\">Основной текст не найден</span></div>",
+      "html_full": "<div class=\"full-rule-block status-pass\"><h3>Основной текст</h3><p>Проверка форматирования основного текста (Таблица 4.1)</p><p>Статус: Пройдено</p></div>"
+    },
+    "headings": {
+      "name": "Заголовки",
+      "description": "Проверка форматирования заголовков (Таблица 5.1)",
+      "status": "pass",
+      "summary": "Все 0 заголовков оформлены правильно",
+      "details": [],
+      "received": "Проверено заголовков: 0",
+      "expected": "",
+      "metadata": {},
+      "html_row": "<div class=\"rule-row status-pass\"><span class=\"rule-name\">Заголовки</span> <span class=\"rule-summary\">Все 0 заголовков оформлены правильно</span></div>",
+      "html_full": "<div class=\"full-rule-block status-pass\"><h3>Заголовки</h3><p>Проверка форматирования заголовков (Таблица 5.1)</p><p>Статус: Пройдено</p><div class=\"rule-detail\"><strong>Полученные данные:</strong> Проверено заголовков: 0</div></div>"
+    },
+    "toc": {
+      "name": "Оглавление",
+      "description": "Проверка оформления оглавления (раздел 6)",
+      "status": "fail",
+      "summary": "Заголовок «Оглавление» не найден",
+      "details": [
+        "Добавьте раздел «ОГЛАВЛЕНИЕ» со стилем «Заголовок 1»"
+      ],
+      "received": "",
+      "expected": "Заголовок первого уровня «ОГЛАВЛЕНИЕ»",
+      "metadata": {},
+      "html_row": "<div class=\"rule-row status-fail\"><span class=\"rule-name\">Оглавление</span> <span class=\"rule-summary\">Заголовок «Оглавление» не найден</span></div>",
+      "html_full": "<div class=\"full-rule-block status-fail\"><h3>Оглавление</h3><p>Проверка оформления оглавления (раздел 6)</p><p>Статус: Не пройдено</p><div class=\"rule-detail\"><strong>Ожидаемый результат:</strong> Заголовок первого уровня «ОГЛАВЛЕНИЕ»</div><div class=\"rule-details\"><strong>Нарушения:</strong><ul><li>Добавьте раздел «ОГЛАВЛЕНИЕ» со стилем «Заголовок 1»</li></ul></div></div>"
+    },
+    "tables": {
+      "name": "Таблицы",
+      "description": "Проверка подписей, форматирования, нумерации, ссылок (раздел 7)",
+      "status": "fail",
+      "summary": "Нарушений в таблицах: 6",
+      "details": [
+        "Таблица без подписи (2x1)",
+        "Таблица без подписи (3x4)",
+        "Таблица без подписи (2x1)",
+        "Таблица без подписи (6x4)",
+        "Таблица без подписи (2x1)",
+        "Таблица без подписи (5x4)"
+      ],
+      "received": "Таблиц: 6, с подписями: 0",
+      "expected": "Таблица X.Y — Название, формат по табл. 7.1 и 7.2",
+      "metadata": {},
+      "html_row": "<div class=\"rule-row status-fail\"><span class=\"rule-name\">Таблицы</span> <span class=\"rule-summary\">Нарушений в таблицах: 6</span></div>",
+      "html_full": "<div class=\"full-rule-block status-fail\"><h3>Таблицы</h3><p>Проверка подписей, форматирования, нумерации, ссылок (раздел 7)</p><p>Статус: Не пройдено</p><div class=\"rule-detail\"><strong>Полученные данные:</strong> Таблиц: 6, с подписями: 0</div><div class=\"rule-detail\"><strong>Ожидаемый результат:</strong> Таблица X.Y — Название, формат по табл. 7.1 и 7.2</div><div class=\"rule-details\"><strong>Нарушения:</strong><ul><li>Таблица без подписи (2x1)</li><li>Таблица без подписи (3x4)</li><li>Таблица без подписи (2x1)</li><li>Таблица без подписи (6x4)</li><li>Таблица без подписи (2x1)</li><li>Таблица без подписи (5x4)</li></ul></div></div>"
+    },
+    "figures": {
+      "name": "Рисунки",
+      "description": "Проверка подписей, форматирования, нумерации, ссылок (раздел 8)",
+      "status": "pass",
+      "summary": "Рисунки оформлены правильно",
+      "details": [],
+      "received": "Рисунков: 0",
+      "expected": "",
+      "metadata": {},
+      "html_row": "<div class=\"rule-row status-pass\"><span class=\"rule-name\">Рисунки</span> <span class=\"rule-summary\">Рисунки оформлены правильно</span></div>",
+      "html_full": "<div class=\"full-rule-block status-pass\"><h3>Рисунки</h3><p>Проверка подписей, форматирования, нумерации, ссылок (раздел 8)</p><p>Статус: Пройдено</p><div class=\"rule-detail\"><strong>Полученные данные:</strong> Рисунков: 0</div></div>"
+    },
+    "formulas": {
+      "name": "Формулы",
+      "description": "Проверка нумерации, ссылок и пояснений (раздел 9)",
+      "status": "pass",
+      "summary": "Формулы не обнаружены",
+      "details": [],
+      "received": "",
+      "expected": "",
+      "metadata": {},
+      "html_row": "<div class=\"rule-row status-pass\"><span class=\"rule-name\">Формулы</span> <span class=\"rule-summary\">Формулы не обнаружены</span></div>",
+      "html_full": "<div class=\"full-rule-block status-pass\"><h3>Формулы</h3><p>Проверка нумерации, ссылок и пояснений (раздел 9)</p><p>Статус: Пройдено</p></div>"
+    },
+    "bullet_lists": {
+      "name": "Маркированные списки",
+      "description": "Проверка оформления маркированных списков (раздел 10)",
+      "status": "pass",
+      "summary": "Маркированные списки не найдены",
+      "details": [],
+      "received": "",
+      "expected": "",
+      "metadata": {},
+      "html_row": "<div class=\"rule-row status-pass\"><span class=\"rule-name\">Маркированные списки</span> <span class=\"rule-summary\">Маркированные списки не найдены</span></div>",
+      "html_full": "<div class=\"full-rule-block status-pass\"><h3>Маркированные списки</h3><p>Проверка оформления маркированных списков (раздел 10)</p><p>Статус: Пройдено</p></div>"
+    },
+    "numbered_lists": {
+      "name": "Нумерованные списки",
+      "description": "Проверка оформления нумерованных списков (раздел 11)",
+      "status": "pass",
+      "summary": "Нумерованные списки не найдены",
+      "details": [],
+      "received": "",
+      "expected": "",
+      "metadata": {},
+      "html_row": "<div class=\"rule-row status-pass\"><span class=\"rule-name\">Нумерованные списки</span> <span class=\"rule-summary\">Нумерованные списки не найдены</span></div>",
+      "html_full": "<div class=\"full-rule-block status-pass\"><h3>Нумерованные списки</h3><p>Проверка оформления нумерованных списков (раздел 11)</p><p>Статус: Пройдено</p></div>"
+    },
+    "listings": {
+      "name": "Листинги",
+      "description": "Проверка подписей, форматирования кода, рамки, ссылок (раздел 12)",
+      "status": "pass",
+      "summary": "Листинги не найдены",
+      "details": [],
+      "received": "",
+      "expected": "",
+      "metadata": {},
+      "html_row": "<div class=\"rule-row status-pass\"><span class=\"rule-name\">Листинги</span> <span class=\"rule-summary\">Листинги не найдены</span></div>",
+      "html_full": "<div class=\"full-rule-block status-pass\"><h3>Листинги</h3><p>Проверка подписей, форматирования кода, рамки, ссылок (раздел 12)</p><p>Статус: Пройдено</p></div>"
+    },
+    "bibliography": {
+      "name": "Список источников",
+      "description": "Проверка оформления списка источников и ссылок (раздел 13)",
+      "status": "fail",
+      "summary": "Раздел не найден",
+      "details": [
+        "Добавьте раздел с заголовком первого уровня «СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ»"
+      ],
+      "received": "",
+      "expected": "Заголовок первого уровня",
+      "metadata": {},
+      "html_row": "<div class=\"rule-row status-fail\"><span class=\"rule-name\">Список источников</span> <span class=\"rule-summary\">Раздел не найден</span></div>",
+      "html_full": "<div class=\"full-rule-block status-fail\"><h3>Список источников</h3><p>Проверка оформления списка источников и ссылок (раздел 13)</p><p>Статус: Не пройдено</p><div class=\"rule-detail\"><strong>Ожидаемый результат:</strong> Заголовок первого уровня</div><div class=\"rule-details\"><strong>Нарушения:</strong><ul><li>Добавьте раздел с заголовком первого уровня «СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ»</li></ul></div></div>"
+    },
+    "appendices": {
+      "name": "Приложения",
+      "description": "Проверка оформления приложений (раздел 14)",
+      "status": "pass",
+      "summary": "Приложения не найдены (допустимо, если их нет)",
+      "details": [],
+      "received": "",
+      "expected": "",
+      "metadata": {},
+      "html_row": "<div class=\"rule-row status-pass\"><span class=\"rule-name\">Приложения</span> <span class=\"rule-summary\">Приложения не найдены (допустимо, если их нет)</span></div>",
+      "html_full": "<div class=\"full-rule-block status-pass\"><h3>Приложения</h3><p>Проверка оформления приложений (раздел 14)</p><p>Статус: Пройдено</p></div>"
+    }
+  },
+  "overall_status": "fail",
+  "processed_at": "2026-04-29 00:11:21",
+  "structure_html": "\n        <div class=\"structure-toggle\" onclick=\"var d=document.getElementById('structure-detail');d.classList.toggle('hidden');this.querySelector('span').textContent=d.classList.contains('hidden')?'Показать':'Скрыть';\">\n            <span style=\"cursor:pointer;color:#5b7fff;font-weight:500;font-size:0.95em;\">Показать</span> структуру документа\n        </div>\n        <div id=\"structure-detail\" class=\"hidden\">\n        <div class=\"structure-summary\"><h3>Структура документа</h3><p class=\"structure-hint\">Все найденные объекты и связи между ними.</p><div class=\"structure-section\"><h4>Таблицы (6)</h4><table class=\"struct-table\"><thead><tr><th>№</th><th>Подпись</th><th>Размер</th><th>Связь</th></tr></thead><tbody><tr><td>1</td><td><span class=\"missing\">НЕТ ПОДПИСИ</span></td><td>2x1</td><td><span class=\"missing\">нет</span></td></tr><tr><td>2</td><td><span class=\"missing\">НЕТ ПОДПИСИ</span></td><td>3x4</td><td><span class=\"missing\">нет</span></td></tr><tr><td>3</td><td><span class=\"missing\">НЕТ ПОДПИСИ</span></td><td>2x1</td><td><span class=\"missing\">нет</span></td></tr><tr><td>4</td><td><span class=\"missing\">НЕТ ПОДПИСИ</span></td><td>6x4</td><td><span class=\"missing\">нет</span></td></tr><tr><td>5</td><td><span class=\"missing\">НЕТ ПОДПИСИ</span></td><td>2x1</td><td><span class=\"missing\">нет</span></td></tr><tr><td>6</td><td><span class=\"missing\">НЕТ ПОДПИСИ</span></td><td>5x4</td><td><span class=\"missing\">нет</span></td></tr></tbody></table></div><div class=\"structure-section\"><h4>Рисунки (0)</h4></div><div class=\"structure-section\"><h4>Подписи к таблицам (0)</h4></div><div class=\"structure-section\"><h4>Подписи к рисункам (0)</h4></div><div class=\"structure-section\"><h4>Листинги (0)</h4></div><div class=\"structure-section\"><h4>Заголовки (0)</h4></div><div class=\"structure-section\"><h4>Списки (0 групп)</h4></div><div class=\"structure-section\"><h4>Формулы (0)</h4><div class=\"structure-section\"><h4>Основной текст (115 абзацев)</h4></div></div></div></div><style>\n            .structure-toggle{margin:16px 0;padding:10px 16px;background:#f7fafc;border:1px solid #e2e8f0;border-radius:8px;user-select:none;}\n            .hidden{display:none;}\n            .structure-summary{background:#fafbfc;padding:20px 24px;margin:12px 0 20px 0;border-radius:10px;border:1px solid #e1e5e9;font-family:'Segoe UI',system-ui,sans-serif;}\n            .structure-summary h3{margin:0 0 4px 0;color:#1a202c;font-size:1.2em;font-weight:600;}\n            .structure-hint{color:#718096;font-size:.85em;margin-bottom:16px;}\n            .structure-section{margin:16px 0;}\n            .structure-section h4{margin:0 0 8px 0;color:#4a5568;font-size:1em;font-weight:600;}\n            .struct-table{width:100%;border-collapse:collapse;background:#fff;border-radius:6px;overflow:hidden;border:1px solid #e2e8f0;}\n            .struct-table th{background:#f7fafc;padding:8px 12px;text-align:left;font-size:.8em;font-weight:600;color:#718096;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #e2e8f0;}\n            .struct-table td{padding:8px 12px;font-size:.85em;color:#2d3748;border-bottom:1px solid #edf2f7;}\n            .struct-table tr:last-child td{border-bottom:none;}\n            .ok{color:#1a7a2e;font-weight:500;}.missing{color:#c0392b;font-weight:600;}\n            </style>"
+}

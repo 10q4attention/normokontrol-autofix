@@ -1,0 +1,14 @@
+{
+  "student_name": "Берлов Дмитрий Максимович",
+  "folder_path": "D:\\Система нормоконтроля\\Файлы\\Берлов Дмитрий Максимович_4943133_assignsubmission_file",
+  "metadata": {
+    "exists": false,
+    "student_name": "Берлов Дмитрий Максимович",
+    "folder_path": "D:\\Система нормоконтроля\\Файлы\\Берлов Дмитрий Максимович_4943133_assignsubmission_file"
+  },
+  "rules_results": {},
+  "overall_status": "error",
+  "processed_at": "2026-04-29 00:07:02",
+  "structure_html": "",
+  "error_message": "Файл DOC/DOCX не найден в папке студента"
+}

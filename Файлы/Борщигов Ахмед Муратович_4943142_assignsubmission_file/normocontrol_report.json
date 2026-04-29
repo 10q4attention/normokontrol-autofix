@@ -1,0 +1,22 @@
+{
+  "student_name": "Борщигов Ахмед Муратович",
+  "folder_path": "D:\\Система нормоконтроля\\Файлы\\Борщигов Ахмед Муратович_4943142_assignsubmission_file",
+  "metadata": {
+    "exists": true,
+    "student_name": "Борщигов Ахмед Муратович",
+    "folder_path": "D:\\Система нормоконтроля\\Файлы\\Борщигов Ахмед Муратович_4943142_assignsubmission_file",
+    "file_path": "D:\\Система нормоконтроля\\Файлы\\Борщигов Ахмед Муратович_4943142_assignsubmission_file\\ВКР_Борщигов_Ахмед_ЭФБО-02-22.docx",
+    "file_name": "ВКР_Борщигов_Ахмед_ЭФБО-02-22.docx",
+    "file_size": 1347889,
+    "file_modified": "2026-04-18 21:31:10",
+    "file_extension": ".docx",
+    "doc_author": "Не указан",
+    "doc_title": "Word Document",
+    "doc_pages": 2
+  },
+  "rules_results": {},
+  "overall_status": "error",
+  "processed_at": "2026-04-29 00:07:06",
+  "structure_html": "",
+  "error_message": "Ошибка модели: invalid literal for int() with base 10: '278.00000000000006'\nTraceback (most recent call last):\n  File \"D:\\Система нормоконтроля\\worker.py\", line 36, in process_one\n    model = DocumentModel(metadata['file_path'], metadata, doc)\n  File \"D:\\Система нормоконтроля\\document_model.py\", line 28, in __init__\n    elem = self._make_element(para, pi, idx)\n  File \"D:\\Система нормоконтроля\\document_model.py\", line 77, in _make_element\n    self._extract_all_props(para, elem)\n    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\n  File \"D:\\Система нормоконтроля\\document_model.py\", line 130, in _extract_all_props\n    target['line_spacing'] = self._get_line_spacing(para)\n                             ~~~~~~~~~~~~~~~~~~~~~~^^^^^^\n  File \"D:\\Система нормоконтроля\\document_model.py\", line 273, in _get_line_spacing\n    v = self._ls(para.paragraph_format.line_spacing)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\astaf\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\docx\\text\\parfmt.py\", line 117, in line_spacing\n    return self._line_spacing(pPr.spacing_line, pPr.spacing_lineRule)\n                              ^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\astaf\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\docx\\oxml\\text\\parfmt.py\", line 256, in spacing_line\n    return spacing.line\n           ^^^^^^^^^^^^\n  File \"C:\\Users\\astaf\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\docx\\oxml\\xmlchemy.py\", line 211, in get_attr_value\n    return self._simple_type.from_xml(attr_str_value)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\astaf\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\docx\\oxml\\simpletypes.py\", line 26, in from_xml\n    return cls.convert_from_xml(xml_value)\n           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^\n  File \"C:\\Users\\astaf\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\docx\\oxml\\simpletypes.py\", line 319, in convert_from_xml\n    return Twips(int(str_value))\n                 ~~~^^^^^^^^^^^\nValueError: invalid literal for int() with base 10: '278.00000000000006'\n"
+}

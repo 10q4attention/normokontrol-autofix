@@ -1,0 +1,22 @@
+{
+  "student_name": "Турчанинов Владислав Игоревич",
+  "folder_path": "D:\\Система нормоконтроля\\Файлы\\Турчанинов Владислав Игоревич_4943801_assignsubmission_file",
+  "metadata": {
+    "exists": true,
+    "student_name": "Турчанинов Владислав Игоревич",
+    "folder_path": "D:\\Система нормоконтроля\\Файлы\\Турчанинов Владислав Игоревич_4943801_assignsubmission_file",
+    "file_path": "D:\\Система нормоконтроля\\Файлы\\Турчанинов Владислав Игоревич_4943801_assignsubmission_file\\Вкр турчанинов.docx",
+    "file_name": "Вкр турчанинов.docx",
+    "file_size": 2155552,
+    "file_modified": "2026-04-18 21:35:28",
+    "file_extension": ".docx",
+    "doc_author": "Не указан",
+    "doc_title": "Не указан",
+    "doc_pages": 1
+  },
+  "rules_results": {},
+  "overall_status": "error",
+  "processed_at": "2026-04-29 00:11:14",
+  "structure_html": "",
+  "error_message": "Ошибка модели: WD_PARAGRAPH_ALIGNMENT has no XML mapping for 'start'\nTraceback (most recent call last):\n  File \"D:\\Система нормоконтроля\\worker.py\", line 36, in process_one\n    model = DocumentModel(metadata['file_path'], metadata, doc)\n  File \"D:\\Система нормоконтроля\\document_model.py\", line 28, in __init__\n    elem = self._make_element(para, pi, idx)\n  File \"D:\\Система нормоконтроля\\document_model.py\", line 77, in _make_element\n    self._extract_all_props(para, elem)\n    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\n  File \"D:\\Система нормоконтроля\\document_model.py\", line 127, in _extract_all_props\n    target['alignment'] = para.alignment\n                          ^^^^^^^^^^^^^^\n  File \"C:\\Users\\astaf\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\docx\\text\\paragraph.py\", line 59, in alignment\n    return self._p.alignment\n           ^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\astaf\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\docx\\oxml\\text\\paragraph.py\", line 45, in alignment\n    return pPr.jc_val\n           ^^^^^^^^^^\n  File \"C:\\Users\\astaf\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\docx\\oxml\\text\\parfmt.py\", line 168, in jc_val\n    return self.jc.val if self.jc is not None else None\n           ^^^^^^^^^^^\n  File \"C:\\Users\\astaf\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\docx\\oxml\\xmlchemy.py\", line 265, in get_attr_value\n    return self._simple_type.from_xml(attr_str_value)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\astaf\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\docx\\enum\\base.py\", line 64, in from_xml\n    raise ValueError(f\"{cls.__name__} has no XML mapping for '{xml_value}'\")\nValueError: WD_PARAGRAPH_ALIGNMENT has no XML mapping for 'start'\n"
+}

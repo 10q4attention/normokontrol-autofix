@@ -1,0 +1,22 @@
+{
+  "student_name": "Липорт Кирилл Алексеевич",
+  "folder_path": "D:\\Система нормоконтроля\\Файлы\\Липорт Кирилл Алексеевич_4942570_assignsubmission_file",
+  "metadata": {
+    "exists": true,
+    "student_name": "Липорт Кирилл Алексеевич",
+    "folder_path": "D:\\Система нормоконтроля\\Файлы\\Липорт Кирилл Алексеевич_4942570_assignsubmission_file",
+    "file_path": "D:\\Система нормоконтроля\\Файлы\\Липорт Кирилл Алексеевич_4942570_assignsubmission_file\\Разработка веб-приложения для промышленного маркетплейса.docx",
+    "file_name": "Разработка веб-приложения для промышленного маркетплейса.docx",
+    "file_size": 989646,
+    "file_modified": "2026-04-18 23:58:40",
+    "file_extension": ".docx",
+    "doc_author": "Дмитрий Терентьев",
+    "doc_title": "Не указан",
+    "doc_pages": 2
+  },
+  "rules_results": {},
+  "overall_status": "error",
+  "processed_at": "2026-04-29 00:09:57",
+  "structure_html": "",
+  "error_message": "Ошибка модели: invalid literal for int() with base 10: '708.6614173228347'\nTraceback (most recent call last):\n  File \"D:\\Система нормоконтроля\\worker.py\", line 36, in process_one\n    model = DocumentModel(metadata['file_path'], metadata, doc)\n  File \"D:\\Система нормоконтроля\\document_model.py\", line 28, in __init__\n    elem = self._make_element(para, pi, idx)\n  File \"D:\\Система нормоконтроля\\document_model.py\", line 77, in _make_element\n    self._extract_all_props(para, elem)\n    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\n  File \"D:\\Система нормоконтроля\\document_model.py\", line 131, in _extract_all_props\n    target['first_line_indent'] = self._get_first_line_indent(para)\n                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^\n  File \"D:\\Система нормоконтроля\\document_model.py\", line 287, in _get_first_line_indent\n    v = self._cm(para.paragraph_format.first_line_indent)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\astaf\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\docx\\text\\parfmt.py\", line 42, in first_line_indent\n    return pPr.first_line_indent\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\astaf\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\docx\\oxml\\text\\parfmt.py\", line 117, in first_line_indent\n    firstLine = ind.firstLine\n                ^^^^^^^^^^^^^\n  File \"C:\\Users\\astaf\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\docx\\oxml\\xmlchemy.py\", line 211, in get_attr_value\n    return self._simple_type.from_xml(attr_str_value)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\astaf\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\docx\\oxml\\simpletypes.py\", line 26, in from_xml\n    return cls.convert_from_xml(xml_value)\n           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^\n  File \"C:\\Users\\astaf\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\docx\\oxml\\simpletypes.py\", line 355, in convert_from_xml\n    return Twips(int(str_value))\n                 ~~~^^^^^^^^^^^\nValueError: invalid literal for int() with base 10: '708.6614173228347'\n"
+}

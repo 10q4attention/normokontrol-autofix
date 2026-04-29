@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Нормоконтроль ВКР</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header class="panel">
+            <h1>Нормоконтроль ВКР</h1>
+            <div class="controls">
+                <input type="text" id="folder-path" class="input-path" placeholder="Путь к папке с работами...">
+                <button id="scan-btn" class="btn btn-primary">Проверить</button>
+                <button id="reload-rules-btn" class="btn btn-secondary">Обновить правила</button>
+            </div>
+            <div class="filters" style="display: none;">
+                <label>Студент:
+                    <select id="filter-student"><option value="all">Все</option></select>
+                </label>
+                <label>Статус:
+                    <select id="filter-status">
+                        <option value="all">Все</option>
+                        <option value="pass">Пройдено</option>
+                        <option value="fail">Не пройдено</option>
+                        <option value="error">Ошибка</option>
+                    </select>
+                </label>
+            </div>
+            <div id="status-message"></div>
+        </header>
+        <main>
+            <div id="stats-bar" class="stats-bar" style="display: none;"></div>
+            <div id="loading" class="loading" style="display: none;">Выполняется проверка...</div>
+            <table id="results-table" class="results-table" style="display: none;">
+                <thead>
+                    <tr><th>Студент</th><th>Статус</th><th>Файл</th><th>Отчёт</th></tr>
+                </thead>
+                <tbody id="table-body"></tbody>
+            </table>
+        </main>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

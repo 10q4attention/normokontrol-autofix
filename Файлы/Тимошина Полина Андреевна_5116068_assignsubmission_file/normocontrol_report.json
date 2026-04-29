@@ -1,0 +1,14 @@
+{
+  "student_name": "Тимошина Полина Андреевна",
+  "folder_path": "D:\\Система нормоконтроля\\Файлы\\Тимошина Полина Андреевна_5116068_assignsubmission_file",
+  "metadata": {
+    "exists": false,
+    "student_name": "Тимошина Полина Андреевна",
+    "folder_path": "D:\\Система нормоконтроля\\Файлы\\Тимошина Полина Андреевна_5116068_assignsubmission_file"
+  },
+  "rules_results": {},
+  "overall_status": "error",
+  "processed_at": "2026-04-29 00:10:59",
+  "structure_html": "",
+  "error_message": "Файл DOC/DOCX не найден в папке студента"
+}

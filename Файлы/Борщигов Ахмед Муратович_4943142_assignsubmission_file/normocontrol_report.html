@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><title>Нормоконтроль: Борщигов Ахмед Муратович</title>
+<style>body{font-family:'Times New Roman',serif;max-width:900px;margin:40px auto;padding:0 20px;color:#1a1a1a;background:#fcfcfc;}
+h1{border-bottom:2px solid #2c3e50;padding-bottom:10px;}h2{color:#2c3e50;}
+.metadata-table{width:100%;border-collapse:collapse;margin:20px 0;background:#fff;}
+.metadata-table td{padding:8px 12px;border:1px solid #dee2e6;}
+.metadata-table td:first-child{background:#f8f9fa;font-weight:600;width:30%;}
+.overall-status{display:inline-block;padding:6px 16px;font-weight:600;font-size:1.1em;}
+.overall-pass{color:#1a7a2e;}.overall-fail{color:#c0392b;}.overall-error{color:#7f8c8d;}
+.rule-block{margin:16px 0;padding:16px;background:#fff;border-left:4px solid #bdc3c7;}
+.rule-block.status-pass{border-left-color:#27ae60;}.rule-block.status-fail{border-left-color:#c0392b;}.rule-block.status-error{border-left-color:#95a5a6;}
+.rule-detail{margin:8px 0;padding:8px 12px;background:#f8f9fa;}.rule-details{margin:8px 0;padding:8px 12px;background:#fdf2f2;}
+.rule-details ul{margin:5px 0;padding-left:20px;}.rule-details li{margin:5px 0;}
+.passed-list{display:flex;flex-wrap:wrap;gap:8px;}.passed-item{padding:4px 12px;background:#e8f5e9;color:#1a7a2e;font-size:.95em;}
+.timestamp{color:#7f8c8d;font-size:.9em;}</style></head><body>
+<h1>Отчёт нормоконтроля</h1><h2>Борщигов Ахмед Муратович</h2>
+<p class="timestamp">Дата проверки: 2026-04-29 00:07:06</p>
+<div class="overall-status overall-error">Общий статус: Ошибка</div>
+<h3>Метаданные файла</h3><table class="metadata-table"><tr><td>Имя файла</td><td>ВКР_Борщигов_Ахмед_ЭФБО-02-22.docx</td></tr><tr><td>Дата изменения</td><td>2026-04-18 21:31:10</td></tr><tr><td>Размер</td><td>1316 КБ</td></tr><tr><td>Автор</td><td>Не указан</td></tr><tr><td>Название</td><td>Word Document</td></tr></table><p><strong>Ошибка:</strong> Ошибка модели: invalid literal for int() with base 10: '278.00000000000006'
+Traceback (most recent call last):
+  File "D:\Система нормоконтроля\worker.py", line 36, in process_one
+    model = DocumentModel(metadata['file_path'], metadata, doc)
+  File "D:\Система нормоконтроля\document_model.py", line 28, in __init__
+    elem = self._make_element(para, pi, idx)
+  File "D:\Система нормоконтроля\document_model.py", line 77, in _make_element
+    self._extract_all_props(para, elem)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\Система нормоконтроля\document_model.py", line 130, in _extract_all_props
+    target['line_spacing'] = self._get_line_spacing(para)
+                             ~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\Система нормоконтроля\document_model.py", line 273, in _get_line_spacing
+    v = self._ls(para.paragraph_format.line_spacing)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\astaf\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\docx\text\parfmt.py", line 117, in line_spacing
+    return self._line_spacing(pPr.spacing_line, pPr.spacing_lineRule)
+                              ^^^^^^^^^^^^^^^^
+  File "C:\Users\astaf\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\docx\oxml\text\parfmt.py", line 256, in spacing_line
+    return spacing.line
+           ^^^^^^^^^^^^
+  File "C:\Users\astaf\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\docx\oxml\xmlchemy.py", line 211, in get_attr_value
+    return self._simple_type.from_xml(attr_str_value)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\astaf\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\docx\oxml\simpletypes.py", line 26, in from_xml
+    return cls.convert_from_xml(xml_value)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\astaf\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\docx\oxml\simpletypes.py", line 319, in convert_from_xml
+    return Twips(int(str_value))
+                 ~~~^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: '278.00000000000006'
+</p></body></html>
