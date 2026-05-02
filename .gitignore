@@ -1,0 +1,37 @@
+# Папки с работами студентов
+uploads/
+Тест/
+Файлы/
+
+# Виртуальное окружение
+venv/
+env/
+.venv/
+
+# Кэш Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Отчёты, сгенерированные системой
+normocontrol_report.html
+normocontrol_report.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Системные файлы
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Временные файлы
+*.tmp
+*.log
