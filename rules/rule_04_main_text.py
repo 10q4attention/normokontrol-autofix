@@ -2,6 +2,7 @@
 Правило 04: Основной текст.
 Проверяет форматирование основного текста по Таблице 4.1.
 Жирность и курсив допустимы для выделения — выводятся как предупреждения.
+Пропускает строки внутри оглавления.
 """
 
 from .base_rule import BaseRule, RuleResult
@@ -23,7 +24,22 @@ class MainTextRule(BaseRule):
         if not main_paragraphs:
             return RuleResult(status='pass', summary='Основной текст не найден')
 
+        # Границы оглавления — исключаем из проверки
+        toc_start = None
+        toc_end = None
+        for h in model.headings:
+            if h['heading_level'] == 1 and h['text'].upper() in ('ОГЛАВЛЕНИЕ', 'СОДЕРЖАНИЕ'):
+                toc_start = h['index']
+            elif toc_start is not None and h['heading_level'] == 1:
+                toc_end = h['index']
+                break
+
         for e in main_paragraphs:
+            # Пропускаем строки внутри оглавления
+            if toc_start is not None and toc_end is not None:
+                if toc_start < e['index'] < toc_end:
+                    continue
+
             text = e['text']
             pv = text[:60] + ('...' if len(text) > 60 else '')
             issues = []
