@@ -34,6 +34,41 @@ class DocumentModel:
                 elem = self._make_table_element(table, ti, idx)
                 self.elements.append(elem)
                 ti += 1
+            
+            elif tag == 'sdt':
+                # Обрабатываем автособираемое содержание (SDT)
+                sdt_content = child.find(f'.//{{{W}}}sdtContent')
+                if sdt_content is not None:
+                    for p_elem in sdt_content.findall(f'.//{{{W}}}p'):
+                        # Ищем соответствующий параграф в doc.paragraphs
+                        for para in doc.paragraphs:
+                            if para._element is p_elem:
+                                text = para.text.strip() if para.text else ''
+                                style = para.style.name if para.style and para.style.name else ''
+                                style_lower = style.lower()
+                                
+                                elem = {
+                                    'id': len(self.elements),
+                                    'index': idx,  # привязываем к индексу SDT
+                                    'kind': 'paragraph',
+                                    'text': text,
+                                    'style_name': style,
+                                    'style_lower': style_lower,
+                                    'is_heading': False, 'heading_level': None, 'heading_number': None,
+                                    'is_caption': False, 'caption_type': None, 'caption_number': None,
+                                    'is_continuation': False, 'is_list_item': False, 'is_code': False,
+                                    'has_border': False, 'is_toc': True,  # ← ВАЖНО: помечаем как TOC
+                                    'has_drawing': False, 'has_formula': False, 'is_table': False,
+                                    'text_category': None, 'linked_to': None, 'linked_from': None,
+                                    'font_name': None, 'font_size_pt': None, 'bold': False, 'italic': False,
+                                    'alignment': None, 'space_before': None, 'space_after': None,
+                                    'line_spacing': None, 'first_line_indent': None,
+                                    'left_indent': None, 'right_indent': None,
+                                }
+                                self._extract_all_props(para, elem)
+                                self.elements.append(elem)
+                                pi += 1  # увеличиваем счётчик параграфов
+                                break
 
         self._link()
         self._categorize_text()

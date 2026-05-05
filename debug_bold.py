@@ -1,80 +1,64 @@
 from docx import Document
 from lxml import etree
+import zipfile
 
 doc_path = input("Путь к файлу DOCX: ").strip()
 doc = Document(doc_path)
 
 W = 'http://schemas.openxmlformats.org/wordprocessingml/2006/main'
 
-print("=== ВСЕ ЭЛЕМЕНТЫ СПИСКОВ (numPr) ===\n")
+# Читаем styles.xml напрямую из архива
+styles_xml = None
+with zipfile.ZipFile(doc_path, 'r') as zf:
+    if 'word/styles.xml' in zf.namelist():
+        styles_xml = etree.fromstring(zf.read('word/styles.xml'))
 
-for i, para in enumerate(doc.paragraphs):
-    numPr = para._element.find(f'.//{{{W}}}numPr')
-    if numPr is None:
-        continue
-    
-    text = para.text.strip()[:80]
-    style = para.style.name if para.style and para.style.name else 'None'
-    numId_el = numPr.find(f'{{{W}}}numId')
-    ilvl_el = numPr.find(f'{{{W}}}ilvl')
-    numId = numId_el.get(f'{{{W}}}val') if numId_el is not None else '?'
-    ilvl = ilvl_el.get(f'{{{W}}}val') if ilvl_el is not None else '0'
+if styles_xml is None:
+    print("styles.xml не найден в архиве!")
+    exit()
 
-    # Маркер из numbering.xml
-    marker = None
-    numFmt = None
-    lvlText_val = None
-    try:
-        numbering = doc._element.find(f'{{{W}}}numbering')
-        if numbering is not None:
-            for num in numbering.findall(f'{{{W}}}num'):
-                if num.get(f'{{{W}}}numId') == numId:
-                    lvl = num.find(f'{{{W}}}lvl[@w:ilvl="{ilvl}"]')
-                    if lvl is None:
-                        lvl = num.find(f'{{{W}}}lvl')
-                    if lvl is not None:
-                        nf = lvl.find(f'{{{W}}}numFmt')
-                        if nf is not None:
-                            numFmt = nf.get(f'{{{W}}}val')
-                        lt = lvl.find(f'{{{W}}}lvlText')
-                        if lt is not None:
-                            lvlText_val = lt.get(f'{{{W}}}val')
-                        if numFmt == 'bullet':
-                            marker = lvlText_val
-                        elif numFmt == 'decimal':
-                            marker = 'decimal'
-                        else:
-                            marker = numFmt
-                    break
-    except: pass
+# Находим Heading 2
+heading2_para = None
+for para in doc.paragraphs:
+    style = para.style.name if para.style and para.style.name else ''
+    if 'Heading 2' in style or 'heading 2' in style.lower():
+        heading2_para = para
+        break
 
-    # Отступы
-    pf = para.paragraph_format
-    left_cm = pf.left_indent.cm if pf.left_indent else None
-    first_cm = pf.first_line_indent.cm if pf.first_line_indent else None
+if heading2_para is None:
+    print("Heading 2 не найден")
+    exit()
 
-    # XML отступы
-    xml_left = None
-    xml_first = None
-    try:
-        ppr = para._element.find(f'{{{W}}}pPr')
-        if ppr is not None:
-            ind = ppr.find(f'{{{W}}}ind')
-            if ind is not None:
-                v = ind.get(f'{{{W}}}left')
-                if v: xml_left = int(v) / 360000.0
-                v = ind.get(f'{{{W}}}firstLine')
-                if v: xml_first = int(v) / 360000.0
-    except: pass
+style_elem = heading2_para.style._element
+style_id = style_elem.get(f'{{{W}}}styleId')
+print(f"Стиль: {heading2_para.style.name}, styleId={style_id}")
 
-    print(f"Параграф {i}: '{text}'")
-    print(f"  Стиль: {style}")
-    print(f"  numId={numId}, ilvl={ilvl}")
-    print(f"  numFmt={numFmt}, marker='{marker}' (lvlText='{lvlText_val}')")
-    print(f"  Отступ слева (direct): {left_cm}")
-    print(f"  Отступ первой строки (direct): {first_cm}")
-    print(f"  Отступ слева (XML): {xml_left}")
-    print(f"  Отступ первой строки (XML): {xml_first}")
-    print()
-
-print("Готово.")
+# Идём по цепочке
+current = style_id
+for level in range(5):
+    print(f"\nУровень {level}: ищем стиль '{current}'")
+    found = False
+    for s in styles_xml.findall(f'{{{W}}}style'):
+        if s.get(f'{{{W}}}styleId') == current:
+            print(f"  Найден!")
+            based_on = s.find(f'{{{W}}}basedOn')
+            if based_on is not None:
+                current = based_on.get(f'{{{W}}}val')
+                print(f"  basedOn = {current}")
+                found = True
+            else:
+                print(f"  basedOn отсутствует — конец цепочки")
+            rpr = s.find(f'{{{W}}}rPr')
+            if rpr is not None:
+                b = rpr.find(f'{{{W}}}b')
+                if b is not None:
+                    val = b.get(f'{{{W}}}val', 'true')
+                    print(f"  w:b = {val} -> bold={val not in ('false', '0')}")
+                else:
+                    print(f"  w:b = НЕТ")
+            else:
+                print(f"  w:rPr = НЕТ")
+            break
+    if not found:
+        print(f"  Стиль '{current}' НЕ НАЙДЕН в styles.xml!")
+        break

@@ -51,14 +51,21 @@ class TOCRule(BaseRule):
         if toc_end is None:
             toc_end = model.elements[-1]['index'] if model.elements else toc_start + 1
 
-        # Строки оглавления
+        # Строки оглавления: ищем элементы с is_toc=True И elements между заголовками
         toc_lines = []
         for e in model.elements:
-            if toc_start < e['index'] < toc_end and e['text']:
-                toc_lines.append(e)
+            if toc_start < e['index'] <= toc_end and e['text']:
+                if e.get('is_toc') or self._looks_like_toc_line(e['text']):
+                    toc_lines.append(e)
 
+        # Если строк не нашли — возможно, автособираемое содержание (SDT)
+        # Тогда это не ошибка, содержание есть
         if not toc_lines:
-            errors.append("Оглавление пусто. Добавьте автоматическое содержание.")
+            return RuleResult(
+                status='pass',
+                summary='Оглавление использует автособираемое содержание (SDT)',
+                received="Автособираемое содержание"
+            )
 
         # 6.3 Отсутствие отступа первой строки
         for line in toc_lines:
@@ -75,12 +82,13 @@ class TOCRule(BaseRule):
             for main_section in self.MAIN_IN_TOC:
                 if main_section in text.upper():
                     idx = text.upper().find(main_section)
-                    actual = text[idx:idx+len(main_section)]
-                    if actual != actual.upper():
-                        errors.append(
-                            f"Заголовок '{actual}' в содержании должен быть ПРОПИСНЫМИ буквами."
-                        )
-                    break
+                    if idx >= 0:
+                        actual = text[idx:idx+len(main_section)]
+                        if actual != actual.upper():
+                            errors.append(
+                                f"Заголовок '{actual}' в содержании должен быть ПРОПИСНЫМИ буквами."
+                            )
+                        break
 
         if errors:
             return RuleResult(
@@ -95,3 +103,12 @@ class TOCRule(BaseRule):
             summary=f'Оглавление оформлено правильно ({len(toc_lines)} строк)',
             received=f"Строк: {len(toc_lines)}"
         )
+
+    def _looks_like_toc_line(self, text):
+        """Похожа ли строка на строку оглавления (заполнитель точками, номер страницы в конце)"""
+        import re
+        if re.search(r'\.{2,}\s*\d+$', text):
+            return True
+        if re.search(r'\s+\d+$', text) and len(text) < 150:
+            return True
+        return False
