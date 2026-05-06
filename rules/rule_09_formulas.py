@@ -52,14 +52,27 @@ class FormulasRule(BaseRule):
             if f.get('section') and f.get('number'):
                 all_numbered.add((f['section'], f['number']))
 
-        for sid, num in all_numbered:
-            if not re.search(
-                rf'формул[аыеойамих]*\s*\(?\s*{sid}\.{num}\s*\)?',
-                model.body_text, re.I
-            ):
-                errors.append(f"Нет ссылки на формулу ({sid}.{num})")
+        for f in formulas:
+            if f.get('section') and f.get('number'):
+                # Находим элемент формулы в model.elements
+                formula_elem = next((e for e in model.elements if e.get('has_formula') and f['text'][:30] in e.get('text', '')), None)
+                if formula_elem:
+                    body_before = ' '.join(
+                        e['text'] for e in model.elements 
+                        if e['index'] < formula_elem['index']
+                        and e['text'] 
+                        and not e.get('is_caption') 
+                        and not e.get('is_toc') 
+                        and not e.get('is_table')
+                    )
+                else:
+                    body_before = model.body_text
+                
+                sid, num = f['section'], f['number']
+                if not re.search(rf'формул[аыеойамих]*\s*\(?\s*{sid}\.{num}\s*\)?', body_before, re.I):
+                    errors.append(f"Нет ссылки на формулу ({sid}.{num}) перед её появлением")
 
-        # Ссылки на несуществующие
+        # Ссылки на несуществующие (во всём тексте)
         found_refs = re.findall(r'формул[аыеойамих]*\s*\(?\s*(\d+)\.(\d+)\s*\)?', model.body_text, re.I)
         for rid, rn in found_refs:
             if (rid, rn) not in all_numbered:

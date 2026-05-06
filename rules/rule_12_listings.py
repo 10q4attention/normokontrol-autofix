@@ -124,10 +124,20 @@ class ListingsRule(BaseRule):
         for cap in caps:
             m = re.match(r'^Листинг\s+([\dА-ЯA-Z]+)\.(\d+)', cap['text'], re.I)
             if m:
-                all_set.add((m.group(1), m.group(2)))
-        for sid, num in all_set:
-            if not re.search(rf'\b[Лл]истинг(?:а|у|ом|е|и|ов|ам|ами|ах)?\s+{sid}\.{num}\b', model.body_text):
-                errors.append(f"Нет ссылки на листинг {sid}.{num}")
+                sid, num = m.group(1), m.group(2)
+                all_set.add((sid, num))
+                body_before = ' '.join(
+                    e['text'] for e in model.elements 
+                    if e['index'] < cap['index']
+                    and e['text'] 
+                    and not e.get('is_caption') 
+                    and not e.get('is_toc') 
+                    and not e.get('is_table')
+                )
+                if not re.search(rf'\b[Лл]истинг(?:а|у|ом|е|и|ов|ам|ами|ах)?\s+{sid}\.{num}\b', body_before):
+                    errors.append(f"Нет ссылки на листинг {sid}.{num} перед его появлением")
+
+        # Ссылки на несуществующие (во всём тексте)
         found = re.findall(r'[Лл]истинг(?:а|у|ом|е|и|ов|ам|ами|ах)?\s+([\dА-ЯA-Z]+)\.(\d+)', model.body_text)
         for rid, rn in found:
             if (rid, rn) not in all_set:

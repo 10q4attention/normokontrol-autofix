@@ -82,7 +82,10 @@ class DocumentModel:
         self.code_blocks = [e for e in self.elements if e['is_code']]
         self.toc_entries = [e for e in self.elements if e['is_toc']]
         self.main_text = [e for e in self.elements if e['text_category'] in ('main', 'bibliography', 'appendix')]
-        self.body_text = ' '.join(e['text'] for e in self.elements if e['text'])
+        self.body_text = ' '.join(
+            e['text'] for e in self.elements 
+            if e['text'] and not e.get('is_caption') and not e.get('is_toc') and not e.get('is_table')
+        )
         self.page_setup = self._extract_page_setup(doc)
 
     # ═══════════════════════════════════════════════════════════════

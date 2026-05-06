@@ -1,64 +1,74 @@
 from docx import Document
-from lxml import etree
-import zipfile
+from document_model import DocumentModel
+from rules.document_loader import safe_load_document
 
 doc_path = input("Путь к файлу DOCX: ").strip()
-doc = Document(doc_path)
 
-W = 'http://schemas.openxmlformats.org/wordprocessingml/2006/main'
-
-# Читаем styles.xml напрямую из архива
-styles_xml = None
-with zipfile.ZipFile(doc_path, 'r') as zf:
-    if 'word/styles.xml' in zf.namelist():
-        styles_xml = etree.fromstring(zf.read('word/styles.xml'))
-
-if styles_xml is None:
-    print("styles.xml не найден в архиве!")
+doc, error = safe_load_document(doc_path)
+if error:
+    print(f"Ошибка: {error}")
     exit()
 
-# Находим Heading 2
-heading2_para = None
-for para in doc.paragraphs:
-    style = para.style.name if para.style and para.style.name else ''
-    if 'Heading 2' in style or 'heading 2' in style.lower():
-        heading2_para = para
-        break
+metadata = {'file_path': doc_path, 'file_name': 'test.docx', 'folder_path': '.'}
+model = DocumentModel(doc_path, metadata, doc)
 
-if heading2_para is None:
-    print("Heading 2 не найден")
-    exit()
+print("=== ТАБЛИЦЫ ===")
+for t in model.tables:
+    cap = None
+    if t.get('linked_from'):
+        cap = next((c for c in model.captions if c.get('linked_to') == t['id']), None)
+    cap_text = cap['text'][:60] if cap else 'БЕЗ ПОДПИСИ'
+    print(f"  {cap_text}")
+print()
 
-style_elem = heading2_para.style._element
-style_id = style_elem.get(f'{{{W}}}styleId')
-print(f"Стиль: {heading2_para.style.name}, styleId={style_id}")
+print("=== РИСУНКИ ===")
+for d in model.drawings:
+    cap = None
+    if d.get('linked_from'):
+        cap = next((c for c in model.captions if c.get('linked_to') == d['id']), None)
+    cap_text = cap['text'][:60] if cap else 'БЕЗ ПОДПИСИ'
+    print(f"  {cap_text}")
+print()
 
-# Идём по цепочке
-current = style_id
-for level in range(5):
-    print(f"\nУровень {level}: ищем стиль '{current}'")
-    found = False
-    for s in styles_xml.findall(f'{{{W}}}style'):
-        if s.get(f'{{{W}}}styleId') == current:
-            print(f"  Найден!")
-            based_on = s.find(f'{{{W}}}basedOn')
-            if based_on is not None:
-                current = based_on.get(f'{{{W}}}val')
-                print(f"  basedOn = {current}")
-                found = True
-            else:
-                print(f"  basedOn отсутствует — конец цепочки")
-            rpr = s.find(f'{{{W}}}rPr')
-            if rpr is not None:
-                b = rpr.find(f'{{{W}}}b')
-                if b is not None:
-                    val = b.get(f'{{{W}}}val', 'true')
-                    print(f"  w:b = {val} -> bold={val not in ('false', '0')}")
-                else:
-                    print(f"  w:b = НЕТ")
-            else:
-                print(f"  w:rPr = НЕТ")
-            break
-    if not found:
-        print(f"  Стиль '{current}' НЕ НАЙДЕН в styles.xml!")
-        break
+print("=== ЛИСТИНГИ (подписи) ===")
+for c in model.captions:
+    if c['caption_type'] == 'listing':
+        print(f"  {c['text'][:60]}")
+print()
+
+print("=== ФОРМУЛЫ ===")
+for f in model.formulas:
+    num = f"({f.get('section','?')}.{f.get('number','?')})" if f.get('section') else 'без номера'
+    print(f"  {num}: {f['text'][:50]}")
+print()
+
+print(f"=== BODY TEXT (первые 200 символов) ===")
+print(f"  {model.body_text[:200]}...")
+print(f"  Всего символов: {len(model.body_text)}")
+print()
+
+# Проверяем конкретный поиск ссылки
+import re
+print("=== ПОИСК ССЫЛОК НА ТАБЛИЦЫ ===")
+found_tables = re.findall(r'[Тт]аблиц(?:а|ы|е|у|ей|ам|ами|ах)\s+([\dА-ЯA-Z]+)\.(\d+)', model.body_text)
+print(f"  Найдено ссылок на таблицы в тексте: {len(found_tables)}")
+for ft in found_tables[:5]:
+    print(f"    Таблица {ft[0]}.{ft[1]}")
+
+print("\n=== ПОИСК ССЫЛОК НА РИСУНКИ ===")
+found_figures = re.findall(r'[Рр]исун(?:ок|ка|ку|ком|ке|ки|ков|кам|ками|ках)?\s+([\dА-ЯA-Z]+)\.(\d+)', model.body_text)
+print(f"  Найдено ссылок на рисунки в тексте: {len(found_figures)}")
+for ff in found_figures[:5]:
+    print(f"    Рисунок {ff[0]}.{ff[1]}")
+
+print("\n=== ПОИСК ССЫЛОК НА ЛИСТИНГИ ===")
+found_listings = re.findall(r'[Лл]истинг(?:а|у|ом|е|и|ов|ам|ами|ах)?\s+([\dА-ЯA-Z]+)\.(\d+)', model.body_text)
+print(f"  Найдено ссылок на листинги в тексте: {len(found_listings)}")
+for fl in found_listings[:5]:
+    print(f"    Листинг {fl[0]}.{fl[1]}")
+
+print("\n=== ПОИСК ССЫЛОК НА ФОРМУЛЫ ===")
+found_formulas = re.findall(r'формул[аыеойамих]*\s*\(?\s*(\d+)\.(\d+)\s*\)?', model.body_text, re.I)
+print(f"  Найдено ссылок на формулы в тексте: {len(found_formulas)}")
+for ff in found_formulas[:5]:
+    print(f"    Формула ({ff[0]}.{ff[1]})")
