@@ -10,9 +10,6 @@ _TABLE_CAP_RE = re.compile(
     re.UNICODE
 )
 # Дефис с пробелами → em-dash
-_DASH_RE = re.compile(r'\s+-\s+')
-
-
 def _fix_table_caption(para):
     pf = para.paragraph_format
     pf.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
@@ -27,9 +24,12 @@ def _fix_table_caption(para):
         run.font.size = Pt(12)
         run.font.italic = True
         run.font.bold = False
-        # Заменяем дефис на em-dash в подписи
-        if ' - ' in run.text:
-            run.text = _DASH_RE.sub(' — ', run.text)
+        # Дефис может быть в отдельном run или внутри текста
+        t = run.text
+        if t.strip() == '-':
+            run.text = t.replace('-', '—')
+        elif ' - ' in t:
+            run.text = t.replace(' - ', ' — ')
 
 
 class TableCaptionFixer(BaseFixer):

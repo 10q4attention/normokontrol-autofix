@@ -11,7 +11,7 @@ _CAPTION_RE = re.compile(
     r'^(Таблица|Рисунок|Листинг|Продолжение\s+[Тт]аблицы)',
     re.UNICODE
 )
-_TOC_RE = re.compile(r'\.{2,}\s*\d+\s*$')
+_TOC_RE = re.compile(r'(\t\s*\d+\s*$|\.{2,}\s*\d+\s*$)')
 
 _SKIP_STYLES = (
     'heading', 'заголовок',

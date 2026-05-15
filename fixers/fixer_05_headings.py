@@ -4,26 +4,30 @@ from docx.shared import Pt, Cm
 from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_LINE_SPACING
 from fixers.base_fixer import BaseFixer, FixResult
 
-_SPECIAL = {
-    'ВВЕДЕНИЕ', 'ЗАКЛЮЧЕНИЕ',
-    'СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ', 'СПИСОК ЛИТЕРАТУРЫ',
-    'АННОТАЦИЯ', 'РЕФЕРАТ', 'СПИСОК ПРИНЯТЫХ СОКРАЩЕНИЙ',
+_MAIN_SECTIONS = {
+    'аннотация', 'оглавление', 'содержание', 'введение', 'заключение',
+    'список использованных источников', 'список литературы',
+    'список используемых сокращений и обозначений', 'приложения', 'реферат',
 }
 
-_LEVEL_SIZE = {1: 18, 2: 16, 3: 14}
+# Точные значения из rule_05 EXP
+_EXP = {
+    1: {'size': 18, 'sb': 0,  'sa': 12, 'indent': 1.25, 'indent_main': 0},
+    2: {'size': 16, 'sb': 24, 'sa': 12, 'indent': 1.25},
+    3: {'size': 14, 'sb': 24, 'sa': 12, 'indent': 1.25},
+}
 
-_HEADING_STYLES = (
-    'heading 1', 'heading 2', 'heading 3',
-    'заголовок 1', 'заголовок 2', 'заголовок 3',
-)
 
-
-def _heading_level(para) -> int | None:
+def _heading_level(para):
     style = (para.style.name or '').lower() if para.style else ''
     for lvl in (1, 2, 3):
         if f'heading {lvl}' in style or f'заголовок {lvl}' in style:
             return lvl
     return None
+
+
+def _is_main_section(text: str) -> bool:
+    return any(s in text.lower() for s in _MAIN_SECTIONS)
 
 
 def _remove_trailing_period(para):
@@ -36,22 +40,25 @@ def _remove_trailing_period(para):
 
 
 def _apply_heading(para, level: int):
-    text = para.text.strip().upper()
-    is_special = text in _SPECIAL
+    exp = _EXP.get(level, _EXP[3])
+    text = para.text.strip()
+    is_main = _is_main_section(text)
 
     pf = para.paragraph_format
     pf.line_spacing_rule = WD_LINE_SPACING.MULTIPLE
     pf.line_spacing = 1.5
-    pf.first_line_indent = Cm(0)
+    pf.space_before = Pt(exp['sb'])
+    pf.space_after = Pt(exp['sa'])
+    pf.left_indent = Pt(0)
 
-    if is_special:
+    if is_main:
         pf.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    elif level == 1:
-        pf.alignment = WD_ALIGN_PARAGRAPH.LEFT
+        pf.first_line_indent = Cm(exp.get('indent_main', 0))
     else:
         pf.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+        pf.first_line_indent = Cm(exp['indent'])
 
-    size = Pt(_LEVEL_SIZE.get(level, 14))
+    size = Pt(exp['size'])
 
     for run in para.runs:
         if not run.text:
@@ -60,7 +67,7 @@ def _apply_heading(para, level: int):
         run.font.size = size
         run.font.bold = True
         run.font.italic = False
-        if is_special:
+        if is_main:
             run.text = run.text.upper()
 
     _remove_trailing_period(para)

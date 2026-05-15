@@ -9,9 +9,6 @@ _FIG_CAP_RE = re.compile(
     r'^Рисунок\s+[\dА-ЯA-Z]+\.\d+',
     re.UNICODE
 )
-_DASH_RE = re.compile(r'\s+-\s+')
-
-
 def _fix_figure_caption(para):
     pf = para.paragraph_format
     pf.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -26,8 +23,11 @@ def _fix_figure_caption(para):
         run.font.size = Pt(12)
         run.font.bold = True
         run.font.italic = False
-        if ' - ' in run.text:
-            run.text = _DASH_RE.sub(' — ', run.text)
+        t = run.text
+        if t.strip() == '-':
+            run.text = t.replace('-', '—')
+        elif ' - ' in t:
+            run.text = t.replace(' - ', ' — ')
 
 
 class FigureCaptionFixer(BaseFixer):
