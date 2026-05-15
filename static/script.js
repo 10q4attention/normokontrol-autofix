@@ -11,9 +11,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const filterStudent = document.getElementById('filter-student');
     const filterStatus = document.getElementById('filter-status');
 
+    const fixBtn = document.getElementById('fix-btn');
+    const fixLoading = document.getElementById('fix-loading');
+    const fixResults = document.getElementById('fix-results');
+
     let allReports = [];
 
     scanBtn.addEventListener('click', scanFolder);
+    fixBtn.addEventListener('click', fixFolder);
     reloadBtn.addEventListener('click', reloadRules);
     folderPathInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') scanFolder(); });
     filterStudent.addEventListener('change', applyFilters);
@@ -165,6 +170,78 @@ document.addEventListener('DOMContentLoaded', () => {
         detailCell.innerHTML = html;
         detailRow.appendChild(detailCell);
         row.parentNode.insertBefore(detailRow, row.nextSibling);
+    }
+
+    async function fixFolder() {
+        const folderPath = folderPathInput.value.trim();
+        if (!folderPath) {
+            showMessage('Укажите путь к папке или файлу', 'error');
+            return;
+        }
+
+        fixLoading.style.display = 'block';
+        fixResults.style.display = 'none';
+        fixResults.innerHTML = '';
+        statusMessage.innerHTML = '';
+
+        const isDocx = folderPath.toLowerCase().endsWith('.docx');
+        const body = isDocx ? { file_path: folderPath } : { folder_path: folderPath };
+
+        try {
+            const response = await fetch('/api/fix', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            if (!response.ok) {
+                const err = await response.json();
+                throw new Error(err.error || 'Ошибка исправления');
+            }
+            const results = await response.json();
+            renderFixResults(results);
+            showMessage('Исправление завершено', 'success');
+        } catch (error) {
+            showMessage(error.message, 'error');
+        } finally {
+            fixLoading.style.display = 'none';
+        }
+    }
+
+    function renderFixResults(results) {
+        let html = '<div class="fix-report">';
+        results.forEach(r => {
+            const ok = r.status === 'ok';
+            const name = r.student_name || r.file_path || '—';
+            html += `<div class="fix-student">`;
+            html += `<div class="fix-student-header">`;
+            html += `<strong>${name}</strong>`;
+            if (ok) {
+                html += ` — <span class="fix-total">${r.total_changes} изменений</span>`;
+                html += ` <span class="fix-backup">Резервная копия: ${r.backup_path.split(/[\\/]/).pop()}</span>`;
+            } else {
+                html += ` — <span class="fix-error">Ошибка: ${r.error}</span>`;
+            }
+            html += `</div>`;
+
+            if (ok && r.results) {
+                const active = r.results.filter(f => f.status === 'ok' && f.changes.length > 0);
+                const skipped = r.results.filter(f => f.status === 'skipped');
+                if (active.length > 0) {
+                    html += '<ul class="fix-changes">';
+                    active.forEach(f => {
+                        html += `<li><strong>${f.name}:</strong> ${f.changes.join('; ')}</li>`;
+                    });
+                    html += '</ul>';
+                }
+                if (skipped.length > 0) {
+                    html += `<div class="fix-skipped">Без изменений: ${skipped.map(f => f.name).join(', ')}</div>`;
+                }
+            }
+            html += '</div>';
+        });
+        html += '</div>';
+        fixResults.innerHTML = html;
+        fixResults.style.display = 'block';
     }
 
     async function reloadRules() {

@@ -3,6 +3,8 @@ from flask import Flask, render_template, request, jsonify
 from config import Config
 from report_builder import ReportBuilder
 from loader import RuleLoader
+from fixer_runner import fix_file, fix_student_folder
+from file_manager import FileManager
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -78,6 +80,40 @@ def view_report():
         return "Отчёт не найден", 404
     with open(rp, 'r', encoding='utf-8') as f:
         return f.read()
+
+
+@app.route('/api/fix', methods=['POST'])
+def fix_folder():
+    """
+    Принимает folder_path или file_path.
+    - file_path: исправляет конкретный .docx
+    - folder_path: сканирует подпапки студентов и исправляет каждый
+    """
+    data = request.json or {}
+    file_path = data.get('file_path', '').strip()
+    folder_path = data.get('folder_path', '').strip()
+
+    if file_path:
+        if not os.path.exists(file_path):
+            return jsonify({'error': 'Файл не найден'}), 400
+        result = fix_file(file_path)
+        return jsonify([result])
+
+    if folder_path:
+        if not os.path.exists(folder_path):
+            return jsonify({'error': 'Папка не найдена'}), 400
+        fm = FileManager()
+        folders = fm.scan_folders(folder_path)
+        # Если подпапок нет — пробуем сам folder_path как папку с одним docx
+        if not folders:
+            result = fix_student_folder(folder_path)
+            return jsonify([result])
+        results = []
+        for sf in folders:
+            results.append(fix_student_folder(sf.path))
+        return jsonify(results)
+
+    return jsonify({'error': 'Укажите file_path или folder_path'}), 400
 
 
 @app.route('/api/reload-rules', methods=['POST'])

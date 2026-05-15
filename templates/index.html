@@ -13,6 +13,7 @@
             <div class="controls">
                 <input type="text" id="folder-path" class="input-path" placeholder="Путь к папке с работами...">
                 <button id="scan-btn" class="btn btn-primary">Проверить</button>
+                <button id="fix-btn" class="btn btn-fix">Исправить</button>
                 <button id="reload-rules-btn" class="btn btn-secondary">Обновить правила</button>
             </div>
             <div class="filters" style="display: none;">
@@ -33,6 +34,8 @@
         <main>
             <div id="stats-bar" class="stats-bar" style="display: none;"></div>
             <div id="loading" class="loading" style="display: none;">Выполняется проверка...</div>
+            <div id="fix-loading" class="loading" style="display: none;">Выполняется исправление...</div>
+            <div id="fix-results" style="display: none;"></div>
             <table id="results-table" class="results-table" style="display: none;">
                 <thead>
                     <tr><th>Студент</th><th>Статус</th><th>Файл</th><th>Отчёт</th></tr>
