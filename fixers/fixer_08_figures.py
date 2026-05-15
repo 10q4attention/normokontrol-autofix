@@ -12,9 +12,11 @@ _FIG_CAP_RE = re.compile(
 def _fix_figure_caption(para):
     pf = para.paragraph_format
     pf.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    pf.space_before = Pt(0)
     pf.space_after = Pt(6)
+    pf.first_line_indent = Pt(0)
     pf.line_spacing_rule = WD_LINE_SPACING.MULTIPLE
-    pf.line_spacing = 1.5
+    pf.line_spacing = 1.0
 
     for run in para.runs:
         if not run.text:
