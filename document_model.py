@@ -578,21 +578,26 @@ class DocumentModel:
                 if refs: cap['code_refs'] = refs
 
     def _categorize_text(self):
-        biblio, appendix = False, False
         used = set()
+        biblio_idx = -1
+        appendix_idx = -1
         for e in self.elements:
             if e['is_heading'] or e['is_caption'] or e['is_list_item'] or e['is_code'] or e['has_drawing'] or e['has_formula']:
                 used.add(e['index'])
-            if e['text'].upper() == 'СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ': biblio = True
-            if e['is_heading'] and e['heading_level'] == 2 and re.match(r'^Приложение\s+[А-ЯA-Z]', e['text'], re.I): appendix = True
+            if e['text'].upper() == 'СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ' and biblio_idx < 0:
+                biblio_idx = e['index']
+            if appendix_idx < 0 and e['is_heading'] and re.match(r'^Приложени[еяю]\s+[А-ЯA-Z]', e['text'], re.I):
+                appendix_idx = e['index']
         for e in self.elements:
             if e['is_table'] or e['text_category'] == 'table_cell': continue
             if e['index'] in used: continue
             if not e['text']: continue
-            if biblio and e['index'] > self._find_heading_index('СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ'):
+            if biblio_idx >= 0 and e['index'] > biblio_idx:
                 e['text_category'] = 'bibliography'
-            elif appendix: e['text_category'] = 'appendix'
-            else: e['text_category'] = 'main'
+            elif appendix_idx >= 0 and e['index'] > appendix_idx:
+                e['text_category'] = 'appendix'
+            else:
+                e['text_category'] = 'main'
 
     def _find_heading_index(self, text_upper):
         for e in self.elements:
