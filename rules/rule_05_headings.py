@@ -4,7 +4,11 @@
 Пропускает строки, находящиеся внутри оглавления.
 """
 
+import re as _re
 from .base_rule import BaseRule, RuleResult
+
+# «Приложение А», «Приложение Б» и т.д. — заголовок уровня 2 с особым форматированием
+_APPENDIX_H_RE = _re.compile(r'^[Пп]риложени[еяю]\s+[А-ЯA-Z]$')
 
 
 class HeadingsRule(BaseRule):
@@ -56,6 +60,7 @@ class HeadingsRule(BaseRule):
             issues = []
 
             is_main = any(s in text.lower() for s in self.MAIN_SECTIONS)
+            is_appendix = bool(_APPENDIX_H_RE.match(text))
 
             # Шрифт Times New Roman
             fn = h.get('font_name')
@@ -81,7 +86,7 @@ class HeadingsRule(BaseRule):
                     issues.append("должен быть ПРОПИСНЫМИ буквами")
 
             # Выравнивание
-            expected_align = 1 if (lv == 1 and is_main) else exp['align']
+            expected_align = 1 if (lv == 1 and is_main) or is_appendix else exp['align']
             actual_align = h.get('alignment')
             if actual_align is not None and actual_align != expected_align:
                 align_names = {0: 'по левому', 1: 'по центру', 2: 'по правому', 3: 'по ширине'}
@@ -91,14 +96,16 @@ class HeadingsRule(BaseRule):
                 )
 
             # Интервал перед
+            exp_sb = 0 if is_appendix else exp['sb']
             sb = h.get('space_before')
-            if sb is not None and abs(sb - exp['sb']) > 2:
-                issues.append(f"интервал перед: {sb:.0f} пт (нужен {exp['sb']})")
+            if sb is not None and abs(sb - exp_sb) > 2:
+                issues.append(f"интервал перед: {sb:.0f} пт (нужен {exp_sb})")
 
             # Интервал после
+            exp_sa = 0 if is_appendix else exp['sa']
             sa = h.get('space_after')
-            if sa is not None and abs(sa - exp['sa']) > 2:
-                issues.append(f"интервал после: {sa:.0f} пт (нужен {exp['sa']})")
+            if sa is not None and abs(sa - exp_sa) > 2:
+                issues.append(f"интервал после: {sa:.0f} пт (нужен {exp_sa})")
 
             # Междустрочный
             ls = h.get('line_spacing')
@@ -106,7 +113,9 @@ class HeadingsRule(BaseRule):
                 issues.append(f"междустрочный: {ls:.2f} (нужен {exp['ls']})")
 
             # Отступ первой строки
-            expected_indent = exp.get('indent_main', exp['indent']) if (lv == 1 and is_main) else exp['indent']
+            expected_indent = (exp.get('indent_main', 0) if (lv == 1 and is_main)
+                               else 0 if is_appendix
+                               else exp['indent'])
             fi = h.get('first_line_indent')
             if fi is not None and abs(fi - expected_indent) > 0.25:
                 issues.append(f"отступ первой строки: {fi:.2f} см (нужен {expected_indent})")

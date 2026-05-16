@@ -77,18 +77,21 @@ class TOCRule(BaseRule):
                 )
 
         # 6.4 ПРОПИСНЫЕ заголовки в содержании
+        # Сравниваем строку оглавления (без номера страницы) с именем раздела целиком,
+        # чтобы не ловить ложные совпадения типа «приложения» в «Тестирование приложения».
+        import re as _re
         for line in toc_lines:
             text = line['text']
+            # Убираем суффикс с номером страницы (таб+цифры или точки+цифры)
+            clean = _re.sub(r'[\t.]+\s*\d+\s*$', '', text).strip()
+            clean_upper = clean.upper()
             for main_section in self.MAIN_IN_TOC:
-                if main_section in text.upper():
-                    idx = text.upper().find(main_section)
-                    if idx >= 0:
-                        actual = text[idx:idx+len(main_section)]
-                        if actual != actual.upper():
-                            errors.append(
-                                f"Заголовок '{actual}' в содержании должен быть ПРОПИСНЫМИ буквами."
-                            )
-                        break
+                if clean_upper == main_section:          # точное совпадение всей строки
+                    if clean != main_section:            # не ПРОПИСНЫМИ
+                        errors.append(
+                            f"Заголовок '{clean}' в содержании должен быть ПРОПИСНЫМИ буквами."
+                        )
+                    break
 
         if errors:
             return RuleResult(

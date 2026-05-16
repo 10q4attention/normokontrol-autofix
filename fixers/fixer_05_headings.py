@@ -1,8 +1,12 @@
 """Фиксер 05: заголовки — шрифт, размер, жирность, выравнивание, убрать точку."""
 
+import re
 from docx.shared import Pt, Cm
 from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_LINE_SPACING
 from fixers.base_fixer import BaseFixer, FixResult
+
+# «Приложение А/Б/В» — отдельный вид заголовка: CENTER, indent=0, sb=0, sa=0
+_APPENDIX_HEADING_RE = re.compile(r'^[Пп]риложени[еяю]\s+[А-ЯA-Z]$')
 
 _MAIN_SECTIONS = {
     'аннотация', 'оглавление', 'содержание', 'введение', 'заключение',
@@ -43,18 +47,26 @@ def _apply_heading(para, level: int):
     exp = _EXP.get(level, _EXP[3])
     text = para.text.strip()
     is_main = _is_main_section(text)
+    is_appendix = bool(_APPENDIX_HEADING_RE.match(text))
 
     pf = para.paragraph_format
     pf.line_spacing_rule = WD_LINE_SPACING.MULTIPLE
     pf.line_spacing = 1.5
-    pf.space_before = Pt(exp['sb'])
-    pf.space_after = Pt(exp['sa'])
     pf.left_indent = Pt(0)
 
-    if is_main:
+    if is_appendix:
+        pf.space_before = Pt(0)
+        pf.space_after = Pt(0)
+        pf.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        pf.first_line_indent = Cm(0)
+    elif is_main:
+        pf.space_before = Pt(exp['sb'])
+        pf.space_after = Pt(exp['sa'])
         pf.alignment = WD_ALIGN_PARAGRAPH.CENTER
         pf.first_line_indent = Cm(exp.get('indent_main', 0))
     else:
+        pf.space_before = Pt(exp['sb'])
+        pf.space_after = Pt(exp['sa'])
         pf.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
         pf.first_line_indent = Cm(exp['indent'])
 
