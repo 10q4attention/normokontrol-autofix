@@ -105,9 +105,9 @@ class TablesRule(BaseRule):
                         if cfs is not None and abs(cfs - 12) > 0.5:
                             issues.append(f"размер в ячейке ({cl}): {cfs:.0f} пт")
 
-                        # Выравнивание: по ширине или по центру
+                        # Выравнивание: по ширине или по центру (не для первого столбца строк данных)
                         ca = cell.get('alignment')
-                        if ca is not None and ca not in (1, 3):
+                        if ci > 0 and ri > 0 and ca is not None and ca not in (1, 3):
                             issues.append(f"выравнивание в ячейке ({cl}) — допустимо по ширине или центру")
 
                         # Интервалы 0

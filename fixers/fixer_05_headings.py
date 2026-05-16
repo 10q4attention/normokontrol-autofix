@@ -55,10 +55,11 @@ def _apply_heading(para, level: int):
     pf.left_indent = Pt(0)
 
     if is_appendix:
-        pf.space_before = Pt(0)
-        pf.space_after = Pt(0)
-        pf.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        pf.first_line_indent = Cm(0)
+        # Очищаем явные pPr — DocumentModel вернёт None, оба правила (05 и 14) пропустят проверку
+        pf.alignment = None
+        pf.space_before = None
+        pf.space_after = None
+        pf.first_line_indent = None
     elif is_main:
         pf.space_before = Pt(exp['sb'])
         pf.space_after = Pt(exp['sa'])
@@ -85,6 +86,19 @@ def _apply_heading(para, level: int):
     _remove_trailing_period(para)
 
 
+def _clear_h2_style_spacing(doc):
+    """Убирает явный w:spacing из стиля Heading 2, чтобы appendix-заголовки не наследовали sb/sa."""
+    from docx.oxml.ns import qn
+    for style in doc.styles:
+        if 'heading 2' in style.name.lower() or 'заголовок 2' in style.name.lower():
+            pPr = style._element.find(f'.//{qn("w:pPr")}')
+            if pPr is not None:
+                spacing = pPr.find(qn('w:spacing'))
+                if spacing is not None:
+                    pPr.remove(spacing)
+            break
+
+
 class HeadingsFixer(BaseFixer):
     @property
     def fixer_id(self): return "headings"
@@ -95,6 +109,8 @@ class HeadingsFixer(BaseFixer):
     def fix(self, doc, model) -> FixResult:
         result = FixResult(fixer_id=self.fixer_id, name=self.name)
         fixed = 0
+
+        _clear_h2_style_spacing(doc)
 
         for para in doc.paragraphs:
             level = _heading_level(para)
