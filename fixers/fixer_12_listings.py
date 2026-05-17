@@ -80,10 +80,25 @@ class ListingsFixer(BaseFixer):
                 _apply_code(para)
                 fixed_code += 1
 
+        # п.12.6: абзац, следующий за последним блоком кода, должен иметь space_before=6
+        fixed_after = 0
+        paras = doc.paragraphs
+        for i, para in enumerate(paras):
+            if _is_code_paragraph(para) and para.text.strip():
+                # Проверяем, следующий параграф — уже не код
+                if i + 1 < len(paras) and not _is_code_paragraph(paras[i + 1]):
+                    np = paras[i + 1]
+                    if (np.paragraph_format.space_before is None or
+                            np.paragraph_format.space_before.pt < 5):
+                        np.paragraph_format.space_before = Pt(6)
+                        fixed_after += 1
+
         if fixed_caps:
             result.changes.append(f"Исправлено подписей листингов: {fixed_caps}")
         if fixed_code:
             result.changes.append(f"Исправлено абзацев кода: {fixed_code}")
+        if fixed_after:
+            result.changes.append(f"Установлен интервал перед абзацем после листинга: {fixed_after}")
 
         if not result.changes:
             result.status = 'skipped'

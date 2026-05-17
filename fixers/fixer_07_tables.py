@@ -85,10 +85,32 @@ class TableCaptionFixer(BaseFixer):
                 _fix_table_cells(table)
                 fixed_tables += 1
 
+        # п.7.5: абзац, следующий за таблицей, должен иметь space_before=6
+        fixed_after = 0
+        paras = doc.paragraphs
+        para_map = {p._element: p for p in paras}
+        body = doc.element.body
+        children = list(body)
+        for idx, child in enumerate(children):
+            tag = child.tag.split('}')[-1] if '}' in child.tag else child.tag
+            if tag == 'tbl':
+                # Найти следующий параграф в body
+                for next_child in children[idx+1:]:
+                    ntag = next_child.tag.split('}')[-1] if '}' in next_child.tag else next_child.tag
+                    if ntag == 'p':
+                        np = para_map.get(next_child)
+                        if np and (np.paragraph_format.space_before is None or
+                                   np.paragraph_format.space_before.pt < 5):
+                            np.paragraph_format.space_before = Pt(6)
+                            fixed_after += 1
+                        break
+
         if fixed_caps:
             result.changes.append(f"Исправлено подписей таблиц: {fixed_caps}")
         if fixed_tables:
             result.changes.append(f"Исправлено форматирование ячеек в таблицах: {fixed_tables}")
+        if fixed_after:
+            result.changes.append(f"Установлен интервал перед абзацем после таблицы: {fixed_after}")
 
         if not result.changes:
             result.status = 'skipped'

@@ -20,12 +20,16 @@ class TextRulesRule(BaseRule):
 
         all_text = ' '.join(e['text'] for e in model.elements if e['text'])
 
-        # ── 3.5 Кавычки: русский текст должен быть в ёлочках ─────
-        straight_quotes = re.findall(r'"([а-яёА-ЯЁ][^"]*[а-яёА-ЯЁ])"', all_text)
+        # ── 3.5 Кавычки: прямые " недопустимы (рус → «», англ → "") ──
+        non_code_text = ' '.join(
+            e['text'] for e in model.elements
+            if e['text'] and not e.get('is_code') and not e.get('is_toc')
+        )
+        straight_quotes = re.findall(r'"[^"\n]{1,80}"', non_code_text)
         if straight_quotes:
             errors.append(
-                f"Обнаружены прямые кавычки (\") вместо ёлочек («») в русском тексте. "
-                f"Пример: \"{straight_quotes[0][:50]}\""
+                f"Прямые кавычки (\") — русский текст должен быть в «», "
+                f"английский в “”. Пример: {straight_quotes[0][:60]}"
             )
 
         # ── 3.10 Нумерация объектов ──────────────────────────────

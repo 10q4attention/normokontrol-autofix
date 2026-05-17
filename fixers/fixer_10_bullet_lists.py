@@ -30,6 +30,8 @@ def _apply_bullet_list(para):
     pf.space_after = Pt(0)
     pf.line_spacing_rule = WD_LINE_SPACING.MULTIPLE
     pf.line_spacing = 1.5
+    pf.first_line_indent = Cm(1.25)  # п.10.1: отступ маркера 1.25 см
+    pf.left_indent = Cm(0)           # п.10.1: отступ слева 0
 
     for run in para.runs:
         if not run.text:
