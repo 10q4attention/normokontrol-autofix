@@ -151,6 +151,7 @@ class DocumentModel:
             'rows': rows,
             'rows_count': len(table.rows),
             'cols_count': len(table.columns) if table.columns else 0,
+            '_tbl': table._tbl,
         }
 
     # ═══════════════════════════════════════════════════════════════
@@ -322,7 +323,10 @@ class DocumentModel:
         return self._chain(para, 'line_spacing')
 
     def _get_first_line_indent(self, para):
-        v = self._cm(para.paragraph_format.first_line_indent)
+        try:
+            v = self._cm(para.paragraph_format.first_line_indent)
+        except (ValueError, TypeError):
+            v = None
         if v is not None: return v
         v = self._xml_para(para, 'first_line_indent')
         if v is not None: return v

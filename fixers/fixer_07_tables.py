@@ -76,11 +76,12 @@ class TableCaptionFixer(BaseFixer):
                 _fix_table_caption(para)
                 fixed_caps += 1
 
-        # Ячейки таблиц у которых есть подписи
-        captioned_indices = {i for i, t in enumerate(model.tables) if t.get('linked_from')}
+        # Ячейки таблиц у которых есть подписи — матчинг по XML-элементу,
+        # т.к. doc.tables включает вложенные таблицы и индексы не совпадают
+        captioned_tbls = {t['_tbl'] for t in model.tables if t.get('linked_from') and t.get('_tbl') is not None}
         fixed_tables = 0
-        for i, table in enumerate(doc.tables):
-            if i in captioned_indices:
+        for table in doc.tables:
+            if table._tbl in captioned_tbls:
                 _fix_table_cells(table)
                 fixed_tables += 1
 
